@@ -30,7 +30,7 @@
             background: white;
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            max-width: 400px;
+            max-width: 500px; /* Un poco más ancho para las imágenes */
             width: 90%;
             transition: all 0.5s ease;
         }
@@ -57,6 +57,34 @@
             background-color: #3cbdb5;
         }
 
+        /* Estilos para las opciones con imágenes */
+        .contenedor-imagenes {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .opcion-img {
+            cursor: pointer;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 3px solid transparent;
+            transition: 0.3s;
+        }
+
+        .opcion-img:hover {
+            border-color: var(--secundario);
+            transform: translateY(-5px);
+        }
+
+        .opcion-img img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            display: block;
+        }
+
         .opcion-incorrecta {
             background-color: #fab1a0 !important;
             animation: shake 0.4s;
@@ -76,6 +104,21 @@
             border: 3px dashed var(--primario);
             border-radius: 20px;
             margin-top: 20px;
+        }
+
+        /* Responsivo para el video */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
@@ -106,13 +149,64 @@
     <div id="pantalla-final" class="container hidden">
         <h1>¡Enhorabuena! 🥳</h1>
         <p>Habéis superado el cuestionario perfectamente.</p>
-        <div id="sorpresa-area" onclick="irAlVideo()">
+        <div id="sorpresa-area" onclick="mostrarVideo()">
             <h3>🎁 TOCA AQUÍ 🎁</h3>
             <p>Para ver vuestra sorpresa</p>
         </div>
     </div>
 
+    <div id="pantalla-video" class="container hidden">
+        <h3>Disfrutad del video...</h3>
+        <div class="video-container">
+            <div id="player"></div>
+        </div>
+    </div>
+
+    <div id="pregunta-imagenes" class="container hidden">
+        <h3>Pregunta Final</h3>
+        <p>Selecciona tu destino favorito:</p>
+        
+        <div class="contenedor-imagenes">
+            <a href="AQUI_TU_ENLACE_1" class="opcion-img">
+                <img src="URL_IMAGEN_1.jpg" alt="Opción 1">
+            </a>
+
+            <a href="AQUI_TU_ENLACE_2" class="opcion-img">
+                <img src="URL_IMAGEN_2.jpg" alt="Opción 2">
+            </a>
+
+            <a href="AQUI_TU_ENLACE_3" class="opcion-img">
+                <img src="URL_IMAGEN_3.jpg" alt="Opción 3">
+            </a>
+        </div>
+    </div>
+
     <script>
+        // 1. Cargar la API de YouTube de forma asíncrona
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '360',
+                width: '640',
+                videoId: 'dQw4w9WgXcQ', // <--- CAMBIA ESTE ID POR EL DE TU VIDEO
+                events: {
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        // 2. Detectar cuando el video termina
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.ENDED) {
+                cambiarPantalla('pantalla-video', 'pregunta-imagenes');
+            }
+        }
+
         function cambiarPantalla(actual, siguiente) {
             document.getElementById(actual).classList.add('hidden');
             document.getElementById(siguiente).classList.remove('hidden');
@@ -125,9 +219,10 @@
             }, 500);
         }
 
-        function irAlVideo() {
-            // Sustituye este enlace por el de tu video (YouTube, Drive, etc.)
-            window.location.href = "https://www.youtube.com"; 
+        function mostrarVideo() {
+            cambiarPantalla('pantalla-final', 'pantalla-video');
+            // Reproducir automáticamente al entrar si el navegador lo permite
+            player.playVideo();
         }
     </script>
 </body>
