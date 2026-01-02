@@ -1,38 +1,134 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Cuestionario Especial</title>
+    <style>
+        :root {
+            --primario: #ff6b6b;
+            --secundario: #4ecdc4;
+            --fondo: #f7f7f7;
+            --texto: #2d3436;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--fondo);
+            color: var(--texto);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 90%;
+            transition: all 0.5s ease;
+        }
+
+        .hidden { display: none; }
+
+        h1 { color: var(--primario); }
+
+        button {
+            background-color: var(--secundario);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+            margin: 10px;
+            width: 100%;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            background-color: #3cbdb5;
+        }
+
+        .opcion-incorrecta {
+            background-color: #fab1a0 !important;
+            animation: shake 0.4s;
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        #sorpresa-area {
+            cursor: pointer;
+            padding: 50px;
+            border: 3px dashed var(--primario);
+            border-radius: 20px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
 
-    <h1>Alfonso Gil Chico</h1>
+    <div id="pantalla-inicio" class="container">
+        <h1>¡Hola! ❤️</h1>
+        <p>Tengo algo preparado para vosotras, pero antes debéis superar un pequeño reto.</p>
+        <button onclick="cambiarPantalla('pantalla-inicio', 'pregunta-1')">Empezar Cuestionario</button>
+    </div>
 
-    <h2>Tecnico Superior en Desarrollo de Aplicaciones Web</h2>
+    <div id="pregunta-1" class="container hidden">
+        <h3>Pregunta 1</h3>
+        <p>¿Qué es lo que más nos gusta?</p>
+        <button onclick="respuestaIncorrecta(this)">Opción 1: La playa</button>
+        <button onclick="cambiarPantalla('pregunta-1', 'pregunta-2')">Opción 2: La montaña</button>
+    </div>
 
-    <h1>Contacto</h1>
-    <p>gilchicoalfosno12@gmail.com</p>
-    <p>684386029</p>
-    <p>alfonso_gil3</p>
+    <div id="pregunta-2" class="container hidden">
+        <h3>Pregunta 2</h3>
+        <p>¿Qué nos gustaría hacer?</p>
+        <button onclick="respuestaIncorrecta(this)">Ruta en boogies</button>
+        <button onclick="respuestaIncorrecta(this)">Paseo por la montaña</button>
+        <button onclick="respuestaIncorrecta(this)">Buscar guíscanos</button>
+        <button onclick="cambiarPantalla('pregunta-2', 'pantalla-final')">Todas las anteriores con vosotras</button>
+    </div>
 
-    <h1>Experiencia Personal</h1>
+    <div id="pantalla-final" class="container hidden">
+        <h1>¡Enhorabuena! 🥳</h1>
+        <p>Habéis superado el cuestionario perfectamente.</p>
+        <div id="sorpresa-area" onclick="irAlVideo()">
+            <h3>🎁 TOCA AQUÍ 🎁</h3>
+            <p>Para ver vuestra sorpresa</p>
+        </div>
+    </div>
 
-    <h6>Marzo-Junio 2025</h6>
+    <script>
+        function cambiarPantalla(actual, siguiente) {
+            document.getElementById(actual).classList.add('hidden');
+            document.getElementById(siguiente).classList.remove('hidden');
+        }
 
-    <p>Formación en centro de trabajo como 
-        Tecnico informatico en Television Calasparra(400)</p>
+        function respuestaIncorrecta(elemento) {
+            elemento.classList.add('opcion-incorrecta');
+            setTimeout(() => {
+                elemento.classList.remove('opcion-incorrecta');
+            }, 500);
+        }
 
-    <h6>Junio-Septiembre 2025</h6>
-    <p>Tecnico Informatico y encargado de TV en Television Calasparra</p>
-
-    <h1>Formacion Academica</h1>
-
-    <p>2024 Formacion Profesion Grado Medio de Sistemas Microinformatios y Redes</p>
-    
-    <p>2026 Formacion Profesional Grado Superior de Desarrollo de Aplicaciones Web</p>
-
-
-    
+        function irAlVideo() {
+            // Sustituye este enlace por el de tu video (YouTube, Drive, etc.)
+            window.location.href = "https://www.youtube.com"; 
+        }
+    </script>
 </body>
 </html>
