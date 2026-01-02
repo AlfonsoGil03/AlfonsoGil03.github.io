@@ -30,13 +30,12 @@
             background: white;
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            max-width: 500px;
+            max-width: 450px;
             width: 90%;
             transition: all 0.5s ease;
         }
 
         .hidden { display: none; }
-
         h1 { color: var(--primario); }
 
         button {
@@ -57,16 +56,16 @@
             background-color: #3cbdb5;
         }
 
+        /* Estilos para las 3 imágenes finales */
         .contenedor-imagenes {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 15px;
+            gap: 10px;
             margin-top: 20px;
         }
 
         .opcion-img {
             text-decoration: none;
-            color: inherit;
             transition: 0.3s;
         }
 
@@ -75,19 +74,12 @@
             height: 100px;
             object-fit: cover;
             border-radius: 10px;
-            border: 3px solid transparent;
-            transition: 0.3s;
+            border: 2px solid transparent;
         }
 
         .opcion-img:hover img {
             border-color: var(--primario);
             transform: scale(1.05);
-        }
-
-        video {
-            width: 100%;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
         .opcion-incorrecta {
@@ -109,6 +101,19 @@
             border: 3px dashed var(--primario);
             border-radius: 20px;
             margin-top: 20px;
+        }
+
+        /* Contenedor para que el video de YouTube sea responsivo */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 15px;
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
         }
     </style>
 </head>
@@ -139,7 +144,7 @@
     <div id="pantalla-final" class="container hidden">
         <h1>¡Enhorabuena! 🥳</h1>
         <p>Habéis superado el cuestionario perfectamente.</p>
-        <div id="sorpresa-area" onclick="reproducirVideo()">
+        <div id="sorpresa-area" onclick="mostrarPantallaVideo()">
             <h3>🎁 TOCA AQUÍ 🎁</h3>
             <p>Para ver vuestra sorpresa</p>
         </div>
@@ -147,34 +152,29 @@
 
     <div id="pantalla-video" class="container hidden">
         <h3>¡Disfrutadlo!</h3>
-        <video id="miVideo" controls>
-            <source src="https://raw.githubusercontent.com/USUARIO/REPOSITORIO/main/Video_Primero.mp4" type="video/mp4">
-            Tu navegador no soporta vídeos.
-        </video>
+        <div class="video-wrapper">
+            <div id="player"></div>
+        </div>
     </div>
 
-    <div id="pregunta-final-imgs" class="container hidden">
-        <h3>Una última cosa...</h3>
-        <p>¿A dónde iremos primero?</p>
+    <div id="pregunta-imagenes" class="container hidden">
+        <h3>¿Qué os ha parecido?</h3>
+        <p>Elegid vuestra recompensa:</p>
         <div class="contenedor-imagenes">
-            <a href="URL_DESTINO_1" class="opcion-img">
-                <img src="URL_IMAGEN_1.jpg" alt="Destino 1">
-                <span>Opción A</span>
+            <a href="ENLACE_AQUI_1" class="opcion-img">
+                <img src="URL_IMAGEN_1" alt="Opción 1">
             </a>
-            <a href="URL_DESTINO_2" class="opcion-img">
-                <img src="URL_IMAGEN_2.jpg" alt="Destino 2">
-                <span>Opción B</span>
+            <a href="ENLACE_AQUI_2" class="opcion-img">
+                <img src="URL_IMAGEN_2" alt="Opción 2">
             </a>
-            <a href="URL_DESTINO_3" class="opcion-img">
-                <img src="URL_IMAGEN_3.jpg" alt="Destino 3">
-                <span>Opción C</span>
+            <a href="ENLACE_AQUI_3" class="opcion-img">
+                <img src="URL_IMAGEN_3" alt="Opción 3">
             </a>
         </div>
     </div>
 
     <script>
-        const video = document.getElementById('miVideo');
-
+        // Funciones lógicas originales
         function cambiarPantalla(actual, siguiente) {
             document.getElementById(actual).classList.add('hidden');
             document.getElementById(siguiente).classList.remove('hidden');
@@ -182,20 +182,37 @@
 
         function respuestaIncorrecta(elemento) {
             elemento.classList.add('opcion-incorrecta');
-            setTimeout(() => {
-                elemento.classList.remove('opcion-incorrecta');
-            }, 500);
+            setTimeout(() => { elemento.classList.remove('opcion-incorrecta'); }, 500);
         }
 
-        function reproducirVideo() {
+        // --- LÓGICA DE YOUTUBE ---
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '360',
+                width: '640',
+                videoId: 'TU_ID_DE_VIDEO', // <--- CAMBIA ESTO (Ej: dQw4w9WgXcQ)
+                playerVars: { 'autoplay': 0, 'rel': 0, 'showinfo': 0 },
+                events: { 'onStateChange': onPlayerStateChange }
+            });
+        }
+
+        function mostrarPantallaVideo() {
             cambiarPantalla('pantalla-final', 'pantalla-video');
-            video.play();
+            player.playVideo();
         }
 
-        // SALTO AUTOMÁTICO AL ACABAR EL VIDEO
-        video.onended = function() {
-            cambiarPantalla('pantalla-video', 'pregunta-final-imgs');
-        };
+        function onPlayerStateChange(event) {
+            // Cuando el video termina (Estado 0)
+            if (event.data == YT.PlayerState.ENDED) {
+                cambiarPantalla('pantalla-video', 'pregunta-imagenes');
+            }
+        }
     </script>
 </body>
 </html>
