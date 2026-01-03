@@ -56,7 +56,6 @@
             background-color: #3cbdb5;
         }
 
-        /* Estilos para las 3 imágenes finales */
         .contenedor-imagenes {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -102,19 +101,6 @@
             border-radius: 20px;
             margin-top: 20px;
         }
-
-        /* Contenedor para que el video de YouTube sea responsivo */
-        .video-wrapper {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border-radius: 15px;
-        }
-        .video-wrapper iframe {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-        }
     </style>
 </head>
 <body>
@@ -144,16 +130,9 @@
     <div id="pantalla-final" class="container hidden">
         <h1>¡Enhorabuena! 🥳</h1>
         <p>Habéis superado el cuestionario correctamente.</p>
-        <div id="sorpresa-area" onclick="mostrarPantallaVideo()">
+        <div id="sorpresa-area" onclick="abrirVideoYContinuar()">
             <h3>🎁 TOCA AQUÍ 🎁</h3>
             <p>Para ver vuestra sorpresa</p>
-        </div>
-    </div>
-
-    <div id="pantalla-video" class="container hidden">
-        <h3>¡Disfrutadlo!</h3>
-        <div class="video-wrapper">
-            <div id="player"></div>
         </div>
     </div>
 
@@ -161,20 +140,19 @@
         <h3>¿Qué os ha parecido?</h3>
         <p>Elegid vuestra recompensa:</p>
         <div class="contenedor-imagenes">
-            <a href="https://www.booking.com/hotel/es/cazorla-estelar.es.html?aid=2311236&label=es-es-booking-desktop-onknyt5TBrS8m9RnGd%2A6fgS652829001115%3Apl%3Ata%3Ap1%3Ap2%3Aac%3Aap%3Aneg%3Afi%3Atikwd-65526620%3Alp1005501%3Ali%3Adec%3Adm&sid=16b95db03ee7eb847497be6e2ca2cf41&all_sr_blocks=1388584802_410855784_2_34_0&checkin=2026-03-06&checkout=2026-03-07&dest_id=-377359&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=1388584802_410855784_2_34_0&hpos=1&matching_block_id=1388584802_410855784_2_34_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=1388584802_410855784_2_34_0__7650&srepoch=1767439699&srpvid=9f5f50ad3671050f&type=total&ucfs=1&" class="opcion-img">
+            <a href="https://www.booking.com/hotel/es/cazorla-estelar.es.html..." target="_blank" class="opcion-img">
                 <img src="burbuja.jpg" alt="Opción 1">
             </a>
-            <a href="https://www.booking.com/hotel/es/coto-del-valle-de-cazorla.es.html?aid=339153&label=cazorla-K1%2A_e0SzgWYUFdwNqQ0rewS388452896384%3Apl%3Ata%3Ap1%3Ap2%3Aac%3Aap%3Aneg%3Afi%3Atikwd-2402180847566%3Alp1005501%3Ali%3Adec%3Adm%3Appccp%3DUmFuZG9tSVYkc2RlIyh9Ybz4KBg0DTFCwTTQk8KIsAQ&sid=16b95db03ee7eb847497be6e2ca2cf41&checkin=2026-03-06&checkout=2026-03-07&dest_id=-377359&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&hpos=1&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&soh=1&sr_order=popularity&srepoch=1767440001&srpvid=80625144b0d40d48&type=total&ucfs=1&#no_availability_msg" class="opcion-img">
+            <a href="https://www.booking.com/hotel/es/coto-del-valle-de-cazorla.es.html..." target="_blank" class="opcion-img">
                 <img src="coto.jpg" alt="Opción 2">
             </a>
-            <a href="https://www.booking.com/hotel/es/parador-de-cazorla.es.html?aid=339153&label=cazorla-K1%2A_e0SzgWYUFdwNqQ0rewS388452896384%3Apl%3Ata%3Ap1%3Ap2%3Aac%3Aap%3Aneg%3Afi%3Atikwd-2402180847566%3Alp1005501%3Ali%3Adec%3Adm%3Appccp%3DUmFuZG9tSVYkc2RlIyh9Ybz4KBg0DTFCwTTQk8KIsAQ&sid=16b95db03ee7eb847497be6e2ca2cf41&all_sr_blocks=1459101_95139262_0_42_0&checkin=2026-03-06&checkout=2026-03-07&dest_id=-377359&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=7&highlighted_blocks=1459101_95139262_0_42_0&hpos=7&matching_block_id=1459101_95139262_0_42_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=1459101_95139262_0_42_0__9265&srepoch=1767440099&srpvid=c69251733f3006c8&type=total&ucfs=1&" class="opcion-img">
+            <a href="https://www.booking.com/hotel/es/parador-de-cazorla.es.html..." target="_blank" class="opcion-img">
                 <img src="casas.jpg" alt="Opción 3">
             </a>
         </div>
     </div>
 
     <script>
-        // Funciones lógicas originales
         function cambiarPantalla(actual, siguiente) {
             document.getElementById(actual).classList.add('hidden');
             document.getElementById(siguiente).classList.remove('hidden');
@@ -185,33 +163,16 @@
             setTimeout(() => { elemento.classList.remove('opcion-incorrecta'); }, 500);
         }
 
-        // --- LÓGICA DE YOUTUBE ---
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-        var player;
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('player', {
-                height: '360',
-                width: '640',
-                videoId: 'TU_ID_DE_VIDEO', // <--- CAMBIA ESTO (Ej: dQw4w9WgXcQ)
-                playerVars: { 'autoplay': 0, 'rel': 0, 'showinfo': 0 },
-                events: { 'onStateChange': onPlayerStateChange }
-            });
-        }
-
-        function mostrarPantallaVideo() {
-            cambiarPantalla('pantalla-final', 'pantalla-video');
-            player.playVideo();
-        }
-
-        function onPlayerStateChange(event) {
-            // Cuando el video termina (Estado 0)
-            if (event.data == YT.PlayerState.ENDED) {
-                cambiarPantalla('pantalla-video', 'pregunta-imagenes');
-            }
+        function abrirVideoYContinuar() {
+            // 1. Reemplaza 'TU_ID_DE_VIDEO' con el código real de YouTube
+            const videoID = 'TU_ID_DE_VIDEO'; 
+            const urlVideo = `https://www.youtube.com/watch?v=${videoID}`;
+            
+            // 2. Abre el video en una pestaña nueva
+            window.open(urlVideo, '_blank');
+            
+            // 3. Salta directamente a la pantalla de las imágenes en la web actual
+            cambiarPantalla('pantalla-final', 'pregunta-imagenes');
         }
     </script>
 </body>
