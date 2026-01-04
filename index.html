@@ -20,7 +20,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh; /* Cambiado a min-height para permitir scroll si es necesario */
+            min-height: 100vh;
         }
 
         .container {
@@ -35,9 +35,8 @@
             margin: 20px 0;
         }
 
-        /* Estilo especial para que el menú de recompensas sea más grande */
         .container-recompensa {
-            max-width: 700px; /* Mucho más ancho que los anteriores */
+            max-width: 700px;
         }
 
         .hidden { display: none; }
@@ -61,10 +60,9 @@
             background-color: #3cbdb5;
         }
 
-        /* Ajustes para imágenes grandes y claras */
         .contenedor-imagenes {
             display: flex;
-            flex-direction: column; /* Una imagen debajo de otra para máximo tamaño */
+            flex-direction: column;
             gap: 20px;
             margin-top: 25px;
         }
@@ -80,19 +78,14 @@
 
         .opcion-img img {
             width: 100%;
-            height: 250px; /* Altura fija más alta */
-            object-fit: cover; /* Asegura que la imagen llene el espacio sin deformarse */
+            height: 250px;
+            object-fit: cover;
             display: block;
             transition: transform 0.5s ease;
         }
 
-        .opcion-img:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-        }
-
         .opcion-img:hover img {
-            transform: scale(1.05); /* Efecto zoom suave */
+            transform: scale(1.05);
         }
 
         .opcion-incorrecta {
@@ -139,7 +132,16 @@
         <button onclick="respuestaIncorrecta(this)">Ruta en boogies</button>
         <button onclick="respuestaIncorrecta(this)">Paseo por la montaña</button>
         <button onclick="respuestaIncorrecta(this)">Buscar guíscanos</button>
-        <button onclick="cambiarPantalla('pregunta-2', 'pantalla-final')">Todas las anteriores con vosotras</button>
+        <button onclick="cambiarPantalla('pregunta-2', 'pregunta-3')">Todas las anteriores con vosotras</button>
+    </div>
+
+    <div id="pregunta-3" class="container hidden">
+        <h3>Pregunta 3</h3>
+        <p>¿Qué creéis que es esto?</p>
+        <button onclick="respuestaIncorrecta(this)">1. Una puta mierda</button>
+        <button onclick="respuestaIncorrecta(this)">2. Estáis muy aburridos</button>
+        <button onclick="cambiarPantalla('pregunta-3', 'pantalla-final')">3. Una sorpresa que muy pronto descubriremos</button>
+        <button onclick="respuestaIncorrecta(this)">4. Estáis muy aburridos x2</button>
     </div>
 
     <div id="pantalla-final" class="container hidden">
@@ -173,7 +175,6 @@
         function cambiarPantalla(actual, siguiente) {
             document.getElementById(actual).classList.add('hidden');
             document.getElementById(siguiente).classList.remove('hidden');
-            // Resetear el scroll arriba si la pantalla es larga
             window.scrollTo(0, 0);
         }
 
@@ -183,12 +184,16 @@
         }
 
         function abrirVideoYContinuar() {
-            // Reemplaza con tu ID real de YouTube
-            const videoID = 'TU_ID_DE_VIDEO'; 
+            // URL original de YouTube del archivo index.html
             const urlVideo = `https://youtube.com/shorts/tpj4ztLE18o`;
             
+            // Abre el video en una pestaña nueva
             window.open(urlVideo, '_blank');
-            cambiarPantalla('pantalla-final', 'pregunta-imagenes');
+            
+            // Cambia automáticamente a la pantalla de recompensas en la pestaña principal
+            setTimeout(() => {
+                cambiarPantalla('pantalla-final', 'pregunta-imagenes');
+            }, 1000); // Espera 1 segundo para que dé tiempo a abrir la otra pestaña
         }
     </script>
 </body>
